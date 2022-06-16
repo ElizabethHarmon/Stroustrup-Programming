@@ -30,7 +30,7 @@ int main()
     cout << "I hear you had a birthday and you are " << age << " years old. ";
     if (age == 0 || age > 110)
         simple_error("You're kidding!");
-    if (age < 12)
+    else if (age < 12)
         cout << "Next year you will be " << age + 1 << ".\n";
     else if (age == 17)
         cout << "Next year you will be able to vote.\n";
