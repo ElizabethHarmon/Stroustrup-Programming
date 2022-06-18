@@ -36,7 +36,7 @@ int main()
 void welcome()
 {
     cout << "Welcome to Bulls and Cows!\n"
-         << "The computer will generate a code with unique digits.\n"
+         << "The computer will generate a code with 4 unique digits.\n"
          << "You have 8 attempts to guess the right digits in the right order.\n"
          << "Bull = right digit in the right position, Cow = right digit in the wrong position.\n";
 }
