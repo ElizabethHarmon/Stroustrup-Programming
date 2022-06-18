@@ -20,8 +20,7 @@ int main()
 
     welcome();
     vector<int> secret_code = create_code(); // Create random secret code with unique digits from a vector of single digits
-    string str = v_to_s(secret_code);
-    cout << str;
+    
     while (attempts > 0)
     {
         string guess = ask_for_guess();                            // Ask user for their guess and return string
