@@ -1,6 +1,4 @@
 #include "../std_lib_facilities.h"
-#include <string>
-#include <vector>
 
 struct Scores
 {
@@ -14,31 +12,35 @@ string ask_for_guess();
 vector<int> s_to_v(string guess);
 string v_to_s(vector<int> v); // Convert vector to string
 Scores tally_scores(vector<int> guesses, vector<int> secret_code);
-void print_response(struct Scores, int attempts, vector<int> v);
+bool print_response(struct Scores, int attempts, vector<int> v);
 
 int main()
 {
-    int attempts = 8;    // Set number of allowed attempts
+    int attempts = 8; // Set number of allowed attempts
 
     welcome();
     vector<int> secret_code = create_code(); // Create random secret code with unique digits from a vector of single digits
-
+    string str = v_to_s(secret_code);
+    cout << str;
     while (attempts > 0)
     {
         string guess = ask_for_guess();                            // Ask user for their guess and return string
         --attempts;                                                // Reduce number of attempts remaining
         vector<int> guesses = s_to_v(guess);                       // Convert string to int vector
         struct Scores scores = tally_scores(guesses, secret_code); // Tally exact and near scores
-        print_response(scores, attempts, secret_code);             // Print response based on attempt
+        bool win = print_response(scores, attempts, secret_code);  // Print response based on attempt
+        if (win == true)
+            break;
     }
+    return 0;
 }
 
 void welcome()
 {
     cout << "Welcome to Bulls and Cows!\n"
-         << "The computer will generate a code with 4 unique digits.\n"
+         << "The computer will generate a secret code with 4 unique digits [0-9].\n"
          << "You have 8 attempts to guess the right digits in the right order.\n"
-         << "Bull = right digit in the right position, Cow = right digit in the wrong position.\n";
+         << "Bull = right digit in the right position, Cow = right digit in the wrong position.\n\n";
 }
 
 vector<int> create_code()
@@ -79,12 +81,14 @@ string v_to_s(vector<int> v)
     return code;
 }
 
-void print_response(struct Scores scores, int attempts, vector<int> v)
+bool print_response(struct Scores scores, int attempts, vector<int> v)
 {
+    bool win = false;
     if (scores.exact == 4)
     {
         cout << "You win with " << attempts << " guesses left!\n";
-        return;
+        win = true;
+        return win;
     }
 
     if (attempts > 0)
@@ -95,6 +99,7 @@ void print_response(struct Scores scores, int attempts, vector<int> v)
         cout << "Sorry, you used all your guesses.\n"
              << "The answer was " << v_to_s(v) << ".\n";
     }
+    return win;
 }
 
 Scores tally_scores(vector<int> guesses, vector<int> secret_code)
