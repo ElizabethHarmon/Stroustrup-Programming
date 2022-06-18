@@ -41,7 +41,7 @@ int main() {
     struct Scores scores = tally_scores(guesses, secret_code);
     // Print response based on attempt
     bool win = print_response(scores, attempts, secret_code);
-    if (win == true) {
+    if (win) {
       break;
     }
   }
@@ -58,7 +58,7 @@ void welcome() {
 }
 
 vector<int> create_code() {
-  vector<int> pick{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+  array<int, 10> pick{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
   srand(time(0));
   random_shuffle(pick.begin(), pick.end());
   vector<int> secret_code{};
