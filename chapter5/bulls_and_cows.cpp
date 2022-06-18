@@ -8,6 +8,7 @@ struct Scores
     int near = 0;
 };
 
+void welcome();
 vector<int> create_code();
 string ask_for_guess();
 vector<int> s_to_v(string guess);
@@ -17,7 +18,9 @@ void print_response(struct Scores, int attempts, vector<int> v);
 
 int main()
 {
-    int attempts = 8;                        // Set number of allowed attempts
+    int attempts = 8;    // Set number of allowed attempts
+
+    welcome();
     vector<int> secret_code = create_code(); // Create random secret code with unique digits from a vector of single digits
 
     while (attempts > 0)
@@ -28,6 +31,14 @@ int main()
         struct Scores scores = tally_scores(guesses, secret_code); // Tally exact and near scores
         print_response(scores, attempts, secret_code);             // Print response based on attempt
     }
+}
+
+void welcome()
+{
+    cout << "Welcome to Bulls and Cows!\n"
+         << "The computer will generate a code with unique digits.\n"
+         << "You have 8 attempts to guess the right digits in the right order.\n"
+         << "Bull = right digit in the right position, Cow = right digit in the wrong position.\n";
 }
 
 vector<int> create_code()
@@ -77,10 +88,10 @@ void print_response(struct Scores scores, int attempts, vector<int> v)
     }
 
     if (attempts > 0)
-        cout << "A" << scores.exact << "B" << scores.near << " You have " << attempts << " guesses remaining.\n";
+        cout << "Bulls:" << scores.exact << " Cows:" << scores.near << "  You have " << attempts << " guesses remaining.\n";
     else
     {
-        cout << "A" << scores.exact << "B" << scores.near << '\n';
+        cout << "Bulls:" << scores.exact << " Cows:" << scores.near << '\n';
         cout << "Sorry, you used all your guesses.\n"
              << "The answer was " << v_to_s(v) << ".\n";
     }
