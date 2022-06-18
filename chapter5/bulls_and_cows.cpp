@@ -9,26 +9,24 @@ struct Scores
 };
 
 vector<int> create_code();
+string ask_for_guess();
 vector<int> s_to_v(string guess);
 string v_to_s(vector<int> v); // Convert vector to string
 Scores tally_scores(vector<int> guesses, vector<int> secret_code);
-void print_out(struct Scores, int guess_count, vector<int> v);
+void print_response(struct Scores, int attempts, vector<int> v);
 
 int main()
 {
-    int guess_count = 8; // Set number of allowed attempts
-
+    int attempts = 8;                        // Set number of allowed attempts
     vector<int> secret_code = create_code(); // Create random secret code with unique digits from a vector of single digits
-    
-    string guess;
-    while (guess_count > 0)
+
+    while (attempts > 0)
     {
-        cout << "What is your guess?: ";
-        cin >> guess;
-        --guess_count;
-        vector<int> guesses = s_to_v(guess); // Convert string to int vector
+        string guess = ask_for_guess();                            // Ask user for their guess and return string
+        --attempts;                                                // Reduce number of attempts remaining
+        vector<int> guesses = s_to_v(guess);                       // Convert string to int vector
         struct Scores scores = tally_scores(guesses, secret_code); // Tally exact and near scores
-        print_out(scores, guess_count, secret_code);
+        print_response(scores, attempts, secret_code);             // Print response based on attempt
     }
 }
 
@@ -41,6 +39,14 @@ vector<int> create_code()
     for (int i = 0; i < 4; ++i)
         secret_code.push_back(pick[i]);
     return secret_code;
+}
+
+string ask_for_guess()
+{
+    string guess;
+    cout << "What is your guess?: ";
+    cin >> guess;
+    return guess;
 }
 
 vector<int> s_to_v(string guess)
@@ -62,16 +68,16 @@ string v_to_s(vector<int> v)
     return code;
 }
 
-void print_out(struct Scores scores, int guess_count, vector<int> v)
+void print_response(struct Scores scores, int attempts, vector<int> v)
 {
     if (scores.exact == 4)
     {
-        cout << "You win with " << guess_count << " guesses left!\n";
+        cout << "You win with " << attempts << " guesses left!\n";
         return;
     }
 
-    if (guess_count > 0)
-        cout << "A" << scores.exact << "B" << scores.near << " You have " << guess_count << " guesses remaining.\n";
+    if (attempts > 0)
+        cout << "A" << scores.exact << "B" << scores.near << " You have " << attempts << " guesses remaining.\n";
     else
     {
         cout << "A" << scores.exact << "B" << scores.near << '\n';
