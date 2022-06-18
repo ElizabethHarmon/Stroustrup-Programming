@@ -9,6 +9,7 @@ struct Scores
 void welcome();
 vector<int> create_code();
 string ask_for_guess();
+bool check(string guess);
 vector<int> s_to_v(string guess);
 string v_to_s(vector<int> v); // Convert vector to string
 Scores tally_scores(vector<int> guesses, vector<int> secret_code);
@@ -20,10 +21,18 @@ int main()
 
     welcome();
     vector<int> secret_code = create_code(); // Create random secret code with unique digits from a vector of single digits
-    
+
     while (attempts > 0)
     {
-        string guess = ask_for_guess();                            // Ask user for their guess and return string
+        string guess = ask_for_guess(); // Ask user for their guess and return string
+        bool valid = check(guess);      // Check guess for length and duplicates
+
+        if (!valid)
+        {
+            cout << "Input error: Please enter 4 unique digits\n";
+            continue;
+        }
+
         --attempts;                                                // Reduce number of attempts remaining
         vector<int> guesses = s_to_v(guess);                       // Convert string to int vector
         struct Scores scores = tally_scores(guesses, secret_code); // Tally exact and near scores
@@ -59,6 +68,27 @@ string ask_for_guess()
     cout << "What is your guess?: ";
     cin >> guess;
     return guess;
+}
+
+bool check(string guess)
+{
+    bool valid = false;
+    int size = 0;
+    int duplicates = 0;
+
+    for (int i = 0; guess[i] != '\0'; ++i)
+        size++;
+
+    for (int i = 0; i < size; ++i)
+    {
+        for (int j = i + 1; j < size; ++j)
+            if (guess[i] == guess[j] && guess[i] != ' ')
+                ++duplicates;
+    }
+
+    if (size == 4 && duplicates == 0)
+        valid = true;
+    return valid;
 }
 
 vector<int> s_to_v(string guess)
